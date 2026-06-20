@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "cursor-native-ui": {
+      "command": "node",
+      "args": [
+        "src/mcp-server.js"
+      ]
+    }
+  }
+}

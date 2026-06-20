@@ -1,0 +1,63 @@
+{
+  "name": "cursor-native-ui",
+  "displayName": "Cursor Native UI",
+  "description": "A VS Code-compatible Cursor extension scaffold with a native webview and MCP server.",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:cursorNativeUI.open",
+    "onView:cursorNativeUI.sidebar"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cursorNativeUI.open",
+        "title": "Cursor Native UI: Open Panel"
+      },
+      {
+        "command": "cursorNativeUI.runSampleWorkflow",
+        "title": "Cursor Native UI: Run Sample Workflow"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cursorNativeUI",
+          "title": "Cursor UI",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "cursorNativeUI": [
+        {
+          "id": "cursorNativeUI.sidebar",
+          "name": "Native UI",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "cursorNativeUI.open"
+        },
+        {
+          "command": "cursorNativeUI.runSampleWorkflow"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "node --check src/extension.js && node --check src/mcp-server.js && node --check media/main.js",
+    "mcp": "node src/mcp-server.js"
+  }
+}
