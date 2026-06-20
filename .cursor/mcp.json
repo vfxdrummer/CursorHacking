@@ -1,9 +1,10 @@
 {
   "mcpServers": {
     "cursor-native-ui": {
+      "type": "stdio",
       "command": "node",
       "args": [
-        "src/mcp-server.js"
+        "${workspaceFolder}/src/mcp-server.js"
       ]
     }
   }

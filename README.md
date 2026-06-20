@@ -38,8 +38,9 @@ Cursor reads the project MCP config from `.cursor/mcp.json`:
 {
   "mcpServers": {
     "cursor-native-ui": {
+      "type": "stdio",
       "command": "node",
-      "args": ["src/mcp-server.js"]
+      "args": ["${workspaceFolder}/src/mcp-server.js"]
     }
   }
 }
