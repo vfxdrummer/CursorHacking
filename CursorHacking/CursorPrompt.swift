@@ -56,7 +56,9 @@ struct CursorPrompt {
     }
 
     private static func languageHint(for fileName: String) -> String {
-        guard let fileExtension = fileName.split(separator: ".").last?.lowercased() else {
+        let fileExtension = URL(fileURLWithPath: fileName).pathExtension.lowercased()
+
+        guard !fileExtension.isEmpty else {
             return ""
         }
 
