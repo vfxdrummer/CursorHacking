@@ -1,0 +1,43 @@
+{
+  "name": "cursor-pocket",
+  "version": "1.0.0",
+  "description": "A mobile-first code editor shell with Cursor agent handoff flows.",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vfxdrummer/CursorHacking.git"
+  },
+  "keywords": [
+    "cursor",
+    "code-editor",
+    "expo",
+    "mobile"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vfxdrummer/CursorHacking/issues"
+  },
+  "homepage": "https://github.com/vfxdrummer/CursorHacking#readme",
+  "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "expo": "^56.0.12",
+    "expo-status-bar": "^56.0.4",
+    "react": "^19.2.7",
+    "react-native": "^0.86.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}
