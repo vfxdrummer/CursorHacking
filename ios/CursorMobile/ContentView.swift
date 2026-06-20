@@ -62,6 +62,9 @@ struct ContentView: View {
                 }
                 .disabled(viewModel.isRunning)
             }
+            .onOpenURL { url in
+                viewModel.handleDeepLink(url)
+            }
         }
     }
 }
@@ -122,6 +125,33 @@ final class CursorAgentViewModel: ObservableObject {
         output = ""
     }
 
+    func handleDeepLink(_ url: URL) {
+        guard url.scheme == "cursormobile" else {
+            return
+        }
+
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let queryItems = components?.queryItems ?? []
+
+        if let value = queryItems.value(named: "repo") {
+            repositoryURL = value
+        }
+
+        if let value = queryItems.value(named: "ref") {
+            startingRef = value
+        }
+
+        if let value = queryItems.value(named: "prompt") {
+            prompt = value
+        }
+
+        if queryItems.value(named: "autoStart") == "true" {
+            Task {
+                await startAgent()
+            }
+        }
+    }
+
     private func apply(_ event: CursorStreamEvent) {
         switch event.name {
         case "status":
@@ -144,5 +174,11 @@ final class CursorAgentViewModel: ObservableObject {
         default:
             break
         }
+    }
+}
+
+private extension Array where Element == URLQueryItem {
+    func value(named name: String) -> String? {
+        first { $0.name == name }?.value
     }
 }

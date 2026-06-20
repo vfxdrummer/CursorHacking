@@ -21,9 +21,23 @@ supported Cursor cloud runtime.
 ## Repo scaffold
 
 ```text
-ios/CursorMobile/              SwiftUI native iOS starter
+ios/CursorMobile.xcodeproj     Xcode project with shared scheme
+ios/CursorMobile/              SwiftUI native iOS app source
 server/cursor-agent-proxy.mjs  Minimal server-side Cursor API proxy
 docs/                          Architecture notes
+```
+
+## Schemes
+
+This scaffold includes both iOS/Xcode meanings of "scheme":
+
+- **Xcode build/run scheme:** `ios/CursorMobile.xcodeproj/xcshareddata/xcschemes/CursorMobile.xcscheme`
+- **iOS URL scheme:** `cursormobile://`, registered in `ios/CursorMobile/Info.plist`
+
+The URL scheme can prefill app state:
+
+```text
+cursormobile://agent?repo=https%3A%2F%2Fgithub.com%2Fyour-org%2Fyour-repo&ref=main&prompt=Update%20the%20README
 ```
 
 ## Why the proxy exists

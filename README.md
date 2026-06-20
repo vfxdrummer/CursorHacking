@@ -17,7 +17,8 @@ iOS app -> backend proxy -> Cursor Cloud Agents API -> cloud VM/repo/PR
 ## What is included
 
 ```text
-ios/CursorMobile/              SwiftUI native iOS starter
+ios/CursorMobile.xcodeproj     Xcode project with shared CursorMobile scheme
+ios/CursorMobile/              SwiftUI native iOS app source
 server/cursor-agent-proxy.mjs  Dependency-free Cursor API proxy
 docs/ios-native-cursor-architecture.md
 package.json                   Proxy scripts
@@ -53,18 +54,41 @@ curl --request POST http://localhost:8787/api/agents \
 
 ## Run the iOS app
 
-The SwiftUI starter lives in `ios/CursorMobile/`.
+The iOS app lives in `ios/CursorMobile.xcodeproj`.
 
-To turn it into a runnable Xcode app:
-
-1. Create a new iOS App project in Xcode.
-2. Add these Swift files to the app target:
-   - `CursorMobileApp.swift`
-   - `ContentView.swift`
-   - `CursorAgentService.swift`
-3. Point `CursorAgentService(baseURL:)` at your reachable proxy URL.
+1. Open `ios/CursorMobile.xcodeproj` in Xcode.
+2. Select the shared **CursorMobile** scheme.
+3. Run it on an iOS simulator or device.
+4. Point `CursorAgentService(baseURL:)` at your reachable proxy URL.
    - iOS simulator can usually use `http://localhost:8787`.
    - A physical device needs your Mac/server LAN URL or a deployed HTTPS proxy.
+
+## iOS URL scheme
+
+The app registers the custom URL scheme in `ios/CursorMobile/Info.plist`:
+
+```text
+cursormobile://
+```
+
+Example deep link:
+
+```text
+cursormobile://agent?repo=https%3A%2F%2Fgithub.com%2Fyour-org%2Fyour-repo&ref=main&prompt=Update%20the%20README&autoStart=false
+```
+
+Supported query parameters:
+
+- `repo` sets the repository URL field.
+- `ref` sets the starting branch/ref field.
+- `prompt` sets the prompt field.
+- `autoStart=true` immediately starts the Cursor Cloud Agent through the proxy.
+
+On a booted simulator, you can test it with:
+
+```bash
+xcrun simctl openurl booted 'cursormobile://agent?prompt=Update%20the%20README'
+```
 
 ## Verification
 
