@@ -1,0 +1,11 @@
+{
+  "name": "cursor-ios-companion",
+  "description": "Native iOS companion scaffold for driving Cursor Cloud Agents through a backend proxy.",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "lint": "node --check server/cursor-agent-proxy.mjs",
+    "start": "node server/cursor-agent-proxy.mjs"
+  }
+}
