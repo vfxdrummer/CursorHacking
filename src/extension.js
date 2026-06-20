@@ -1,12 +1,16 @@
 const vscode = require('vscode');
 
 const EXTENSION_ID = 'cursorNativeUI';
+const EXTENSION_URI_AUTHORITY = 'cursorhacking.cursor-native-ui';
 
 function activate(context) {
   const provider = new NativeUiViewProvider(context.extensionUri);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(NativeUiViewProvider.viewType, provider),
+    vscode.window.registerUriHandler({
+      handleUri: (uri) => handleUri(uri, context.extensionUri)
+    }),
     vscode.commands.registerCommand(`${EXTENSION_ID}.open`, () => {
       NativeUiPanel.createOrShow(context.extensionUri);
     }),
@@ -65,7 +69,9 @@ class NativeUiPanel {
 
     this.panel.webview.html = getWebviewHtml(this.panel.webview, this.extensionUri, 'panel');
 
-    this.panel.onDidDispose(() => this.dispose(), null);
+    this.panel.onDidDispose(() => {
+      NativeUiPanel.currentPanel = undefined;
+    }, null);
     this.panel.webview.onDidReceiveMessage((message) => {
       handleWebviewMessage(message);
     });
@@ -95,9 +101,63 @@ async function handleWebviewMessage(message) {
     case 'showInfo':
       vscode.window.showInformationMessage(message.text || 'Hello from Cursor Native UI.');
       return;
+    case 'copyDeepLink':
+      await copyDeepLink();
+      return;
     default:
       vscode.window.showWarningMessage(`Unknown Cursor Native UI message: ${message.type}`);
   }
+}
+
+async function handleUri(uri, extensionUri) {
+  if (uri.authority && uri.authority !== EXTENSION_URI_AUTHORITY) {
+    vscode.window.showWarningMessage(`Unsupported Cursor Native UI URI authority: ${uri.authority}`);
+    return;
+  }
+
+  const route = normalizeUriPath(uri.path);
+  const params = new URLSearchParams(uri.query);
+  const action = params.get('action');
+
+  switch (route) {
+    case 'open':
+      NativeUiPanel.createOrShow(extensionUri);
+      await runDeepLinkAction(action);
+      return;
+    case 'workflow':
+      NativeUiPanel.createOrShow(extensionUri);
+      await runDeepLinkAction('runWorkflow');
+      return;
+    default:
+      vscode.window.showWarningMessage(`Unknown Cursor Native UI route: ${route || '/'}`);
+  }
+}
+
+async function runDeepLinkAction(action) {
+  switch (action) {
+    case null:
+    case '':
+    case 'open':
+      return;
+    case 'openReadme':
+      await openReadme();
+      return;
+    case 'runWorkflow':
+      await vscode.commands.executeCommand(`${EXTENSION_ID}.runSampleWorkflow`);
+      return;
+    default:
+      vscode.window.showWarningMessage(`Unknown Cursor Native UI deep-link action: ${action}`);
+  }
+}
+
+function normalizeUriPath(path) {
+  return path.replace(/^\/+/, '').replace(/\/+$/, '');
+}
+
+async function copyDeepLink() {
+  const link = `cursor://${EXTENSION_URI_AUTHORITY}/open?action=runWorkflow`;
+  await vscode.env.clipboard.writeText(link);
+  vscode.window.showInformationMessage(`Copied Cursor deep link: ${link}`);
 }
 
 async function openReadme() {
@@ -158,6 +218,17 @@ function getWebviewHtml(webview, extensionUri, surface) {
       <button data-command="openReadme">Open README</button>
       <button data-command="runWorkflow">Run sample workflow</button>
       <button data-command="showInfo">Show Cursor notification</button>
+      <button data-command="copyDeepLink">Copy Cursor deep link</button>
+    </section>
+
+    <section class="card">
+      <h2>Scheme entry point</h2>
+      <p>
+        The extension registers a URI handler for
+        <code>cursor://${EXTENSION_URI_AUTHORITY}/open?action=runWorkflow</code>.
+        Use this from an external app to reopen the native panel and dispatch a
+        supported action.
+      </p>
     </section>
 
     <section class="card">

@@ -10,6 +10,9 @@ const commands = {
   showInfo: () => ({
     type: 'showInfo',
     text: 'Cursor Native UI is connected to the extension host.'
+  }),
+  copyDeepLink: () => ({
+    type: 'copyDeepLink'
   })
 };
 

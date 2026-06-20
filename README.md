@@ -4,6 +4,7 @@ This repo is a starter scaffold for plugging a UI directly into Cursor with nati
 surfaces:
 
 - A VS Code-compatible extension that renders a sidebar/webview inside Cursor.
+- A Cursor URI/deep-link handler for opening the native panel from another app.
 - A project-level MCP server that exposes Agent-callable tools.
 - Launch and configuration files for local extension development.
 
@@ -29,6 +30,27 @@ media/                Replaceable webview frontend assets
 
 The UI in `media/` is intentionally static. Replace it with your actual app
 bundle and keep the `vscode.postMessage(...)` bridge for editor actions.
+
+## Try the scheme/deep link
+
+The extension registers a URI handler through VS Code's `onUri` activation:
+
+```text
+cursor://cursorhacking.cursor-native-ui/open?action=runWorkflow
+```
+
+Use that shape from an external app to reopen the native panel and optionally
+dispatch a supported action.
+
+Supported routes/actions:
+
+- `cursor://cursorhacking.cursor-native-ui/open`
+- `cursor://cursorhacking.cursor-native-ui/open?action=openReadme`
+- `cursor://cursorhacking.cursor-native-ui/open?action=runWorkflow`
+
+The URL scheme is Cursor's product scheme (`cursor://`). The URI authority is
+the extension identifier (`publisher.name`), defined by `publisher` and `name`
+in `package.json`.
 
 ## Try the MCP bridge
 

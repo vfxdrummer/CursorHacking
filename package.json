@@ -3,6 +3,7 @@
   "displayName": "Cursor Native UI",
   "description": "A VS Code-compatible Cursor extension scaffold with a native webview and MCP server.",
   "version": "0.1.0",
+  "publisher": "cursorhacking",
   "private": true,
   "license": "MIT",
   "engines": {
@@ -13,6 +14,7 @@
   ],
   "activationEvents": [
     "onCommand:cursorNativeUI.open",
+    "onUri",
     "onView:cursorNativeUI.sidebar"
   ],
   "main": "./src/extension.js",
