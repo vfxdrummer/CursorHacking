@@ -17,7 +17,7 @@ iOS app -> backend proxy -> Cursor Cloud Agents API -> cloud VM/repo/PR
 ## What is included
 
 ```text
-ios/CursorMobile.xcodeproj     Xcode project with shared CursorMobile scheme
+CursorHacking.xcodeproj        Root Xcode project with shared schemes
 ios/CursorMobile/              SwiftUI native iOS app source
 server/cursor-agent-proxy.mjs  Dependency-free Cursor API proxy
 docs/ios-native-cursor-architecture.md
@@ -54,10 +54,10 @@ curl --request POST http://localhost:8787/api/agents \
 
 ## Run the iOS app
 
-The iOS app lives in `ios/CursorMobile.xcodeproj`.
+The iOS app opens from the root Xcode project:
 
-1. Open `ios/CursorMobile.xcodeproj` in Xcode.
-2. Select the shared **CursorMobile** scheme.
+1. Open `CursorHacking.xcodeproj` in Xcode.
+2. Select the shared **CursorHacking** or **CursorMobile** scheme.
 3. Run it on an iOS simulator or device.
 4. Point `CursorAgentService(baseURL:)` at your reachable proxy URL.
    - iOS simulator can usually use `http://localhost:8787`.
