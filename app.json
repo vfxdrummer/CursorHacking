@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Cursor Pocket",
+    "slug": "cursor-pocket",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "cursorpocket",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.cursorpocket.app"
+    },
+    "extra": {
+      "cursorCloudUrl": "https://cursor.com/agents"
+    }
+  }
+}
